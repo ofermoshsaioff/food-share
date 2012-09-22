@@ -37,7 +37,7 @@ function start(route, handle) {
 		}
 	// now serve all the rest of the requests
 	} else {
-		route(handle, pathname, response);
+		route(handle, pathname, response, request);
 		}
 	}
 
