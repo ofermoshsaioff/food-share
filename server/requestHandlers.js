@@ -1,8 +1,8 @@
-var fs = require('fs');
-var formidable = require('formidable');
-var express = require('express');
-var sys = require('sys');
-var querystring = require('querystring');
+var fs = require('fs'),
+	formidable = require('formidable'),
+	sys = require('sys'),
+	mu = require('mu2'),
+	util = require('util')
 
 function start(response, request) {
 	serve_html_files('./index.html', response);
@@ -19,12 +19,10 @@ function contact(response, request) {
 function bang(response, request) {
 	var form = new formidable.IncomingForm();
 	form.parse(request, function(error, fields, files) {
-		showWhosEatingWhat(fields, response);
-		/*
-		response.writeHead(200, {'content-type': 'text/plain'});
-		response.write('received upload:\n\n');
-		response.end(sys.inspect({fields: fields, files: files}));
-		*/
+		console.log(fields.name);
+		console.log(fields.rest);
+		var stream = mu.compileAndRender('bangyouredead.html', {name: fields.name, rest: fields.rest});
+		util.pump(stream, response);
 		});
 	}
 
