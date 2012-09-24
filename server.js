@@ -1,11 +1,21 @@
+var cradle = require('cradle'), 
+	express = require('express')
+var app = express()
+  , server = require('http').createServer(app)
+  , io = require('socket.io').listen(server);
+  
+server.listen(8888);
 
+// create socket with socket.io 
 
-var express = require('express'),
-	cradle = require('cradle');
-	
-var app = express();
+io.sockets.on('connection', function (socket) {
+	console.log('socket connected to server');
+});
+
+// Creating a db connection to irisCouch. 
+//if db exists notify, else, create the db and create a view for querying all results.
+
 var db = new(cradle.Connection)('https://food-share.iriscouch.com/', 443).database('foodshare');
-
 db.exists(function (err, exists) {
     if (err) {
       console.log('error', err);
@@ -14,6 +24,7 @@ db.exists(function (err, exists) {
     } else {
       console.log('database does not exist, creating it.');
       db.create();
+	  console.log('creating view for querying all picks');
 	  db.save('_design/users', {
       all: {
           map: function (doc) {
@@ -23,24 +34,32 @@ db.exists(function (err, exists) {
 		});
     }
   });
+  
+// specify where the static html pages are found
 app.set('views', __dirname + '/templates');
+
+// work with ejs to render html 
 app.engine('html', require('ejs').renderFile);
 
 app.use(express.bodyParser());
+// serve static content: css, js, ico files
 app.use('/static', express.static(__dirname + '/static'));
 
+// page handling
 app.get('/', function(req, res){
   sendAllPicks(res);
 });
 
 app.post('/', function(req, res){
   var today = new Date();
-  db.save(req.body.name, {'name':req.body.name,'rest':req.body.rest, 'date':today.toDateString()}, function(db_err, db_res) {
+  db.save(req.body.name,{'name':req.body.name,'rest':req.body.rest, 'date':today.toDateString()}, function(db_err, db_res) {
 	if (db_err) {
 		console.log('error saving pick: ' + db_err);
 		} else {
-		console.log('saved pick: '+req.body.name + ' wants to eat at ' + req.body.rest);
+		// returning all picks to client;
 		sendAllPicks(res)
+		// pushing new pick to other clients
+		io.sockets.emit('push',{'name':req.body.name,'rest':req.body.rest, 'date':today.toDateString()});
 			}
 		});
 	});
@@ -60,7 +79,8 @@ app.get('/contact', function(req, res){
 function sendAllPicks(res) {
 	db.view('users/all', function (fetch_err, fetch_res) {
 		if (fetch_err) {
-			console.log('error fetching all picks: ' + fetch_err) 
+			console.log('error fetching all picks: ' + fetch_err)
+			res.render('index.html', {picks: []});
 		} 	else {
 			console.log('picks='+fetch_res);
 			res.render('index.html', {picks: fetch_res});
@@ -70,4 +90,4 @@ function sendAllPicks(res) {
    
 
 
-app.listen(3000);
+//app.listen(3000);
