@@ -27,21 +27,42 @@
 			  <div class="nav-collapse collapse">
 				<ul class="nav">
 				  <li><a href="home">Home</a></li>
-				  <li><a href="about">About</a></li>
-				  <li class="active"><a href="contact">Contact</a></li>
+				  <li class="active"><a href="about">Whos Eating What</a></li>
+				  <li><a href="contact">About</a></li>
 				</ul>
 			  </div><!--/.nav-collapse -->
 			</div>
 		  </div>
 		</div>
-		<div class="span3 offset10">
+		<div class="span6 offset8">
 			<div class="alert alert-info">
 				<a class="close">&times;</a>
-				<strong>Don't call us, we'll call you</strong>
+				<ul id="result"><% for (var i=0; i<picks.length; i++) { %>
+					<li><%=picks[i].value.name%> wants to eat at <%=picks[i].value.rest%></li>
+					<% } %>
+				</ul>
+				
 			</div>
 		</div>
 		
 		<script src="/static/bootstrap.js"></script>
 		<script src="/static/bootstrap.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+		   var socket = io.connect('http://localhost:8888');
+		   socket.on('connect', function() {
+			 console.log('client connected');
+			});
+		   socket.on('push', function (data) {
+			updatepage(data);
+		  });
+		  
+		  function updatepage(data){
+			var ul = document.getElementById("result");
+			var newLI = document.createElement("LI");
+			ul.appendChild(newLI);
+			newLI.innerHTML = (data.name + ' wants to eat at ' + data.rest);
+}
+		</script>
 	</body>
 </html>

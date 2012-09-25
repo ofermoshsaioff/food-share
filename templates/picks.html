@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
+<head>
 	<meta charset="utf-8">
     <title>FoodShare - Share what you want to eat with others</title>
 	<link rel="icon" type="image/ico" href="/static/favicon.ico">
@@ -28,47 +26,43 @@
 			  <a class="brand" href="home">Food Share</a>
 			  <div class="nav-collapse collapse">
 				<ul class="nav">
-				  <li class="active"><a href="home">Home</a></li>
-				  <li><a href="picks">Whos Eating What</a></li>
+				  <li><a href="home">Home</a></li>
+				  <li class="active"><a href="picks">Whos Eating What</a></li>
 				  <li><a href="about">About</a></li>
 				</ul>
 			  </div><!--/.nav-collapse -->
 			</div>
 		  </div>
 		</div>
-		<div class="row-fluid" >
-			<div class="span4 offset4">				
-				<form class="form-vertical well" method="post" action="/">
-				<fieldset>
-					<legend>Where Do You Want To Eat Today?</legend>
-						<div class="span8 offset3">
-							<input type="text" class="input-large" name="name" placeholder="Enter your name"/>
-						</div>
-						<div class="span8 offset3">
-							<select name="rest">
-								<option></option>
-								<option>Olive</option>
-								<option>Kyoto Express</option>
-								<option>McDonald's</option>
-								<option>Giraffe</option>
-								<option>Zozobra</option>
-								<option>Shlomtzi</option>
-								<option>Koi Sushi bar</option>
-								<option>Burger Ranch</option>
-								<option>Pinati</option>
-								<option>Bar Bari</option>
-								<option>Osaka</option>
-							</select>
-						</div>
-						<div class="span8 offset4">
-							<button class="btn btn-primary" type="submit">Eat Now</button>
-						</div>
-				</fieldset>
-				</form>
+		<div class="span6 offset8">
+			<div class="alert alert-info">
+				<a class="close">&times;</a>
+				<ul id="result"><% for (var i=0; i<picks.length; i++) { %>
+					<li><%=picks[i].value.name%> wants to eat at <%=picks[i].value.rest%></li>
+					<% } %>
+				</ul>
+				
 			</div>
-		</div>		
+		</div>
+		
 		<script src="/static/bootstrap.js"></script>
 		<script src="/static/bootstrap.min.js"></script>
-		
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+		   var socket = io.connect('http://localhost:8888');
+		   socket.on('connect', function() {
+			 console.log('client connected');
+			});
+		   socket.on('push', function (data) {
+			updatepage(data);
+		  });
+		  
+		  function updatepage(data){
+			var ul = document.getElementById("result");
+			var newLI = document.createElement("LI");
+			ul.appendChild(newLI);
+			newLI.innerHTML = (data.name + ' wants to eat at ' + data.rest);
+}
+		</script>
 	</body>
 </html>

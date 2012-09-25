@@ -42,12 +42,13 @@ app.set('views', __dirname + '/templates');
 app.engine('html', require('ejs').renderFile);
 
 app.use(express.bodyParser());
+
 // serve static content: css, js, ico files
 app.use('/static', express.static(__dirname + '/static'));
 
 // page handling
 app.get('/', function(req, res){
-  sendAllPicks(res);
+  res.render('index.html');
 });
 
 app.post('/', function(req, res){
@@ -65,25 +66,25 @@ app.post('/', function(req, res){
 	});
 
 app.get('/home', function(req, res){
-  sendAllPicks(res);
+    res.render('index.html');
 });
 
 app.get('/about', function(req, res){
   res.render('about.html');
 });
 
-app.get('/contact', function(req, res){
-  res.render('contact.html');
+app.get('/picks', function(req, res){
+  sendAllPicks(res);
 });
 
 function sendAllPicks(res) {
 	db.view('users/all', function (fetch_err, fetch_res) {
 		if (fetch_err) {
 			console.log('error fetching all picks: ' + fetch_err)
-			res.render('index.html', {picks: []});
+			res.render('picks.html', {picks: []});
 		} 	else {
 			console.log('picks='+fetch_res);
-			res.render('index.html', {picks: fetch_res});
+			res.render('picks.html', {picks: fetch_res});
 		}
 	});
 }
