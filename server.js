@@ -18,7 +18,7 @@ io.sockets.on('connection', function (socket) {
 var db = new(cradle.Connection)('https://food-share.iriscouch.com/', 443).database('foodshare');
 db.exists(function (err, exists) {
     if (err) {
-      console.log('error', err);
+      console.log('error', JSON.stringify(err));
     } else if (exists) {
       console.log('the force is with you.');
     } else {
@@ -55,7 +55,7 @@ app.post('/', function(req, res){
   var today = new Date();
   db.save(req.body.name,{'name':req.body.name,'rest':req.body.rest, 'date':today.toDateString()}, function(db_err, db_res) {
 	if (db_err) {
-		console.log('error saving pick: ' + db_err);
+		console.log('error saving pick: ' + JSON.stringify(db_err));
 		} else {
 		// returning all picks to client;
 		sendAllPicks(res)
@@ -80,7 +80,7 @@ app.get('/picks', function(req, res){
 function sendAllPicks(res) {
 	db.view('users/all', function (fetch_err, fetch_res) {
 		if (fetch_err) {
-			console.log('error fetching all picks: ' + fetch_err)
+			console.log('error fetching all picks: ' + JSON.stringify(fetch_err));
 			res.render('picks.html', {picks: []});
 		} 	else {
 			console.log('picks='+fetch_res);
