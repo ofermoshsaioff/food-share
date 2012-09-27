@@ -24,17 +24,12 @@ db.exists(function (err, exists) {
     } else {
       console.log('database does not exist, creating it.');
       db.create();
-	  console.log('creating view for querying all picks');
-	  db.save('_design/users', {
-      all: {
-          map: function (doc) {
-              if (doc.name && doc.rest) emit(doc.name, doc);
-				}
-			}
-		});
+	  console.log('creating views');
+	  createViews();
     }
   });
   
+ 
 // specify where the static html pages are found
 app.set('views', __dirname + '/templates');
 
@@ -70,7 +65,7 @@ app.get('/home', function(req, res){
 });
 
 app.get('/about', function(req, res){
-  res.render('about.html');
+  res.render('about.html');  
 });
 
 app.get('/picks', function(req, res){
@@ -78,14 +73,38 @@ app.get('/picks', function(req, res){
 });
 
 function sendAllPicks(res) {
-	db.view('users/all', function (fetch_err, fetch_res) {
-		if (fetch_err) {
-			console.log('error fetching all picks: ' + JSON.stringify(fetch_err));
-			res.render('picks.html', {picks: []});
-		} 	else {
-			console.log('picks='+fetch_res);
-			res.render('picks.html', {picks: fetch_res});
+	db.view('rests/group', {group: true}, function(fetch_err, fetch_res) {
+	if (fetch_err) {
+		console.log(JSON.stringify(fetch_err));
+		res.render('picks.html', {picks: []});
+		} else {
+		console.log('picks='+fetch_res);
+		res.render('picks.html', {picks: fetch_res});
 		}
+	});
+}
+
+function createViews() {
+	db.save('_design/rests', {
+	 group: {
+		map: function (doc) {
+			if (doc.name && doc.rest) emit(doc.rest, doc);
+			},
+		reduce: function(key, values, rereduce) {
+				var result = [];
+				for (var i=0;i<values.length;i++) {
+					result.push(values[i].name);
+				}
+				return result.join(', ');
+			}
+		}
+	});
+	db.save('_design/users', {
+      all: {
+          map: function (doc) {
+              if (doc.name && doc.rest) emit(doc.name, doc);
+				}
+			}
 	});
 }
    
