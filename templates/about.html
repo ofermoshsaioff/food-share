@@ -15,7 +15,7 @@
 		<link href="/static/bootstrap.css" rel="stylesheet">
 	</head>
 	<body>
-		<div class="navbar navbar-fixed-top">
+		<div class="navbar navbar-inverse navbar-fixed-top"">
 		  <div class="navbar-inner">
 			<div class="container-fluid">
 			  <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -35,13 +35,30 @@
 		  </div>
 		</div>
 		<div class="span8 offset7">
-			<div class="alert alert-info">
-				<a class="close">&times;</a>
+			<div class="hero-unit">
 				<strong>Food Share</strong> was created by Ofer Moshaioff & Michael Derazon in search of someone they can order food with...
 			</div>
+		</div>
+		<div id="newInfo" style="position:absolute; bottom:0px;">		
 		</div>
 		
 		<script src="/static/bootstrap.js"></script>
 		<script src="/static/bootstrap.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+		   var socket = io.connect('http://localhost:8888');
+		   socket.on('connect', function() {
+			 console.log('client connected');
+			});
+		   socket.on('push', function (data) {
+			updatepage(data);
+		  });
+		  
+		  function updatepage(data){
+			var info = document.getElementById("newInfo");
+			info.setAttribute('class', 'alert alert');
+			info.innerHTML = data.name + ' has just chosen to eat at <strong>' + data.rest, + '</strong>';
+		}
+		</script>
 	</body>
 </html>

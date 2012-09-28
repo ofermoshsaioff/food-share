@@ -55,6 +55,7 @@ app.post('/', function(req, res){
 		// returning all picks to client;
 		sendAllPicks(res)
 		// pushing new pick to other clients
+		console.log('pushing new pick to client');
 		io.sockets.emit('push',{'name':req.body.name,'rest':req.body.rest, 'date':today.toDateString()});
 			}
 		});
@@ -99,6 +100,7 @@ function createViews() {
 			}
 		}
 	});
+	
 	db.save('_design/users', {
       all: {
           map: function (doc) {
@@ -106,8 +108,5 @@ function createViews() {
 				}
 			}
 	});
+
 }
-   
-
-
-//app.listen(3000);

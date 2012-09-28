@@ -15,7 +15,7 @@
 		<link href="/static/bootstrap.css" rel="stylesheet">
 	</head>
 	<body>
-		<div class="navbar navbar-fixed-top">
+		<div class="navbar navbar-inverse navbar-fixed-top"">
 		  <div class="navbar-inner">
 			<div class="container-fluid">
 			  <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -34,15 +34,23 @@
 			</div>
 		  </div>
 		</div>
-		<div class="span6 offset8">
-			<div class="alert alert-info">
-				<a class="close">&times;</a>
-				<ul id="result"><% for (var i=0; i<picks.length; i++) { %>
-					<li><%=picks[i].key%> - <%=picks[i].value%></li>
-					<% } %>
+		<div class="container">
+			<div class="row-fluid">
+				<ul class="thumbnails">
+				<% for (var i=0; i<picks.length; i++) {%>
+				  <li>
+					<div class="thumbnail" style="height:100px">
+						<div class="alert alert-info">
+							<h1><%= picks[i].key %></h1>
+							<h4><%=picks[i].value %></h4>
+						</div>
+					</div>
+				  </li>
+				  <% } %>
 				</ul>
-				
 			</div>
+		</div>
+		<div id="newInfo" style="position:absolute; bottom:0px;">		
 		</div>
 		
 		<script src="/static/bootstrap.js"></script>
@@ -58,11 +66,10 @@
 		  });
 		  
 		  function updatepage(data){
-			var ul = document.getElementById("result");
-			var newLI = document.createElement("LI");
-			ul.appendChild(newLI);
-			newLI.innerHTML = (data.name + ' wants to eat at ' + data.rest);
-}
+			var info = document.getElementById("newInfo");
+			info.setAttribute('class', 'alert alert');
+			info.innerHTML = data.name + ' has just chosen to eat at <strong>' + data.rest, + '</strong>';
+		}
 		</script>
 	</body>
 </html>
