@@ -9,6 +9,7 @@
     <meta name="author" content="Ofer Moshaioff">
   </head
 	  <link href="/static/bootstrap.css" rel="stylesheet">
+	  <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
 	  <style>
 		  body {
 			padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -72,7 +73,7 @@
 				</form>
 			</div>
 		</div>
-		<div id="newInfo" style="position:absolute; bottom:0px;">		
+		<div id="newInfo" style="position:absolute; bottom:0px;">
 		</div>		
 		<script src="/static/bootstrap.js"></script>
 		<script src="/static/bootstrap.min.js"></script>
@@ -90,8 +91,16 @@
 			var info = document.getElementById("newInfo");
 			info.setAttribute('class', 'alert alert');
 			info.innerHTML = data.name + ' has just chosen to eat at <strong>' + data.rest, + '</strong>';
-		}
+		}	
 		</script>
-		
 	</body>
+	<footer>
+		<div class="container" style="position:absolute; bottom:10px;">
+			<div class="span10 offset7">
+				<a href="https://github.com/ofermoshsaioff/food-share">FoodShare</a> by Ofer Moshaioff & Michael Derazon is powered by <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>,
+				Server built using <a href="http://nodejs.org/">node.js</a> and <a href="http://expressjs.com/">express </a>
+				
+			<div>
+		</div>
+	</footer>
 </html>
