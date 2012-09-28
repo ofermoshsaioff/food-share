@@ -7,13 +7,13 @@
     <meta name="author" content="Ofer Moshaioff">
   </head
 	  <link href="/static/bootstrap.css" rel="stylesheet">
+	  <link href="/static/bootstrap.min.css" rel="stylesheet">
+	  <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">	  
 	  <style>
 		  body {
 			padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 		  }
 		</style>
-		<link href="/static/bootstrap.css" rel="stylesheet">
-		<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
 	</head>
 	<body>
 		<div class="navbar navbar-inverse navbar-fixed-top"">
@@ -69,15 +69,16 @@
 		  function updatepage(data){
 			var info = document.getElementById("newInfo");
 			info.setAttribute('class', 'alert alert');
-			info.innerHTML = data.name + ' has just chosen to eat at <strong>' + data.rest, + '</strong>';
+			info.innerHTML = data.name + ' just picked <strong>' + data.rest + '</strong> for lunch today';
 		}
 		</script>
 	</body>
-	<footer>
+	<footer class="footer">
 		<div class="container" style="position:absolute; bottom:10px;">
-			<div class="span10 offset7">
-				<a href="https://github.com/ofermoshsaioff/food-share">FoodShare</a> by Ofer Moshaioff & Michael Derazon is powered by <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>,
-				Server built using <a href="http://nodejs.org/">node.js</a> and <a href="http://expressjs.com/">express </a>
+			<div class="span10 offset6">
+				<a href="https://github.com/ofermoshsaioff/food-share">FoodShare</a> by Ofer Moshaioff & Michael Derazon is powered by 
+				<a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>, Server built using 
+				<a href="http://nodejs.org/">node.js</a> and <a href="http://expressjs.com/">express </a>
 				
 			<div>
 		</div>
