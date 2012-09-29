@@ -37,7 +37,7 @@
 			  <div class="nav-collapse collapse">
 				<ul class="nav">
 				  <li><a href="home">Home</a></li>
-				  <li class="active"><a href="picks">Whos Eating What</a></li>
+				  <li class="active"><a href="picks">Who's Eating What</a></li>
 				  <li><a href="about">About</a></li>
 				</ul>
 			  </div><!--/.nav-collapse -->
@@ -72,7 +72,8 @@
 			 console.log('client connected');
 			});
 		   socket.on('push', function (data) {
-			updatepage(data);
+		   updatepage(data);
+		   location.reload(true);
 		  });
 		  
 		  function updatepage(data){

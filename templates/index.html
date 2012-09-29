@@ -37,13 +37,13 @@
 		}
 		
 		.footer {
-		background-color:#f5f5f5;
-		position: absolute;
-		bottom:0px;
-		left:0px;
-		right:0px;
-		text-align:center;
-		margin: 0 auto 0;
+			background-color:#f5f5f5;
+			position: absolute;
+			bottom:0px;
+			left:0px;
+			right:0px;
+			text-align:center;
+			margin: 0 auto 0;
 		}
 		</style>
 	</head>
@@ -60,7 +60,7 @@
 			  <div class="nav-collapse collapse">
 				<ul class="nav">
 				  <li class="active"><a href="home">Home</a></li>
-				  <li><a href="picks">Whos Eating What</a></li>
+				  <li><a href="picks">Who's Eating What</a></li>
 				  <li><a href="about">About</a></li>
 				</ul>
 			  </div><!--/.nav-collapse -->
@@ -84,22 +84,24 @@
 						<div class="row-fluid span8 offset3">
 							<select name="rest">
 								<option></option>
-								<option>Olive</option>
-								<option>Kyoto Express</option>
-								<option>McDonald's</option>
-								<option>Giraffe</option>
-								<option>Zozobra</option>
-								<option>Shlomtzi</option>
-								<option>Koi Sushi bar</option>
-								<option>Burger Ranch</option>
-								<option>Pinati</option>
-								<option>Bar Bari</option>
-								<option>Osaka</option>
-								<option>Zussy</option>
-								<option>The Mall</option>
-								<option>5 Senses</option>
 								<option>Aroma</option>
 								<option>Bahadonas</option>
+								<option>Bar Bari</option>
+								<option>Burger Ranch</option>
+								<option>Giraffe</option>
+								<option>Koi Sushi bar</option>
+								<option>Kyoto Express</option>
+								<option>McDonald's</option>
+								<option>Moses</option>
+								<option>Olive</option>
+								<option>Osaka</option>
+								<option>Pinati</option>
+								<option>Sameah</option>
+								<option>Shlomtzi</option>
+								<option>The Mall</option>
+								<option>The 5 Senses</option>
+								<option>Zozobra</option>
+								<option>Zussy</option>
 							</select>
 						</div>
 						<div class="span8 offset4">
@@ -113,7 +115,7 @@
 			Or, if you want to see what everybody else picked, go to <a href="/picks">Whos Eating What</a>
 		</div>
 		<div class="span4 offset10">
-			<h3>* Still in Beta...</h3>
+			<h3>* Yes, we're still in Beta</h3>
 		</div>
 			
 		<div id="newInfo" style="position:absolute; bottom:40px;">
@@ -133,7 +135,7 @@
 		  function updatepage(data){
 			var info = document.getElementById("newInfo");
 			info.setAttribute('class', 'alert alert');
-			info.innerHTML = data.name + ' just picked <strong>' + data.rest + '</strong> for lunch today';
+			info.innerHTML = data.name + ' just picked <strong>' + data.rest + '</strong> for lunch today';			
 		}	
 		</script>
 	</body>
