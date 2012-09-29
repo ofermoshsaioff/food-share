@@ -35,6 +35,16 @@
 		  line-height: 30px;
 		  margin-bottom: 30px;
 		}
+		
+		.footer {
+		background-color:#f5f5f5;
+		position: absolute;
+		bottom:0px;
+		left:0px;
+		right:0px;
+		text-align:center;
+		margin: 0 auto 0;
+		}
 		</style>
 	</head>
 	<body>
@@ -46,7 +56,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			  </a>
-			  <a class="brand" href="home">Food Share</a>
+			  <a class="brand" href="home">FoodShare</a>
 			  <div class="nav-collapse collapse">
 				<ul class="nav">
 				  <li class="active"><a href="home">Home</a></li>
@@ -59,7 +69,7 @@
 		</div>
 		<div class="myHeader">
 			<div class="container">
-				<h1>FoodShare</h1>
+				<h1>FoodShare*</h1>
 				<strong>Find out what your coworkers want to eat for lunch today!</strong>
 			</div>
 		</div>
@@ -71,7 +81,7 @@
 						<div class="span8 offset3">
 							<input type="text" class="input-large" name="name" placeholder="Enter your full name"/>
 						</div>
-						<div class="span8 offset3">
+						<div class="row-fluid span8 offset3">
 							<select name="rest">
 								<option></option>
 								<option>Olive</option>
@@ -100,9 +110,13 @@
 			</div>
 		</div>
 		<div class="alert alert-info offset8" style="width:550px;">
-			<p>Or, if you want to see what everybody else picked, go to <a href="/picks">Whos Eating What</a><p>
+			Or, if you want to see what everybody else picked, go to <a href="/picks">Whos Eating What</a>
 		</div>
-		<div id="newInfo" style="position:absolute; bottom:0px;">
+		<div class="span4 offset10">
+			<h3>* Still in Beta...</h3>
+		</div>
+			
+		<div id="newInfo" style="position:absolute; bottom:40px;">
 		</div>		
 		<script src="/static/bootstrap.js"></script>
 		<script src="/static/bootstrap.min.js"></script>
@@ -123,14 +137,11 @@
 		}	
 		</script>
 	</body>
-	<footer class="footer">
-		<div class="container" style="position:absolute; bottom:10px;">
-			<div class="span10 offset6">
+	<footer class="footer well">
+			<div>
 				<a href="https://github.com/ofermoshsaioff/food-share">FoodShare</a> by Ofer Moshaioff & Michael Derazon is powered by 
 				<a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>, Server built using 
 				<a href="http://nodejs.org/">node.js</a> and <a href="http://expressjs.com/">express </a>
-				
 			</div>
-		</div>
 	</footer>
 </html>

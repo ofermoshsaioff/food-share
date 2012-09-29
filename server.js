@@ -7,10 +7,11 @@ var app = express()
 server.listen(8888);
 
 // create socket with socket.io 
-
 io.sockets.on('connection', function (socket) {
 	console.log('socket connected to server');
 });
+// lower log level so taht debug messages wont flood log
+io.set('log level', 1)
 
 // Creating a db connection to irisCouch. 
 //if db exists notify, else, create the db and create a view for querying all results.
@@ -53,7 +54,7 @@ app.post('/', function(req, res){
 		console.log('error saving pick: ' + JSON.stringify(db_err));
 		} else {
 		// returning all picks to client;
-		sendAllPicks(res)
+		getAllPicks(res)
 		// pushing new pick to other clients
 		console.log('pushing new pick to client');
 		io.sockets.emit('push',{'name':req.body.name,'rest':req.body.rest, 'date':today.toDateString()});
@@ -70,10 +71,11 @@ app.get('/about', function(req, res){
 });
 
 app.get('/picks', function(req, res){
-  sendAllPicks(res);
+  getAllPicks(res);
 });
 
-function sendAllPicks(res) {
+function getAllPicks(res) {
+	var today = new Date();
 	db.view('rests/group', {group: true}, function(fetch_err, fetch_res) {
 	if (fetch_err) {
 		console.log(JSON.stringify(fetch_err));

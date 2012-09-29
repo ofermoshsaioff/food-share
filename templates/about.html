@@ -13,6 +13,15 @@
 		  body {
 			padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 		  }
+		  .footer {
+			background-color:#f5f5f5;
+			position: absolute;
+			bottom:0px;
+			left:0px;
+			right:0px;
+			text-align:center;
+			margin: 0 auto 0;
+			}
 		</style>		
 	</head>
 	<body>
@@ -24,7 +33,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			  </a>
-			  <a class="brand" href="home">Food Share</a>
+			  <a class="brand" href="home">FoodShare</a>
 			  <div class="nav-collapse collapse">
 				<ul class="nav">
 				  <li><a href="home">Home</a></li>
@@ -35,13 +44,26 @@
 			</div>
 		  </div>
 		</div>
-		<div class="span8 offset6">
-			<div class="hero-unit">
-				<h1>About FoodShare<h1>
-				<p>Coming Soon...</p>
+		<div class="span6 offset6">
+			<div class="container">
+				<div class="alert alert-info span9">
+					<h1>About FoodShare</h1>
+					<br>
+					<p><strong>FoodShare</strong> allows you to choose who you want to have lunch with, and where.<br>
+					It's simple, either pick a place you want to eat lunch in today, or see what everybody else picked.
+					<br>
+					<br>
+					<strong>FoodShare</strong> stores your picks and creates groups of people that picked the same restaurant to eat in.
+					<br>
+					<br>
+					<strong>FoodShare</strong> uses <strong>node.js</strong> as the server technology combining
+					<strong>express</strong> and <strong>socket.io</strong> and <strong>couchdb</strong> as the database implementation to create a super fast service.
+					<br>
+					</p>
+				</div>
 			</div>
 		</div>
-		<div id="newInfo" style="position:absolute; bottom:0px;">		
+		<div id="newInfo" style="position:absolute; bottom:40px;">		
 		</div>
 		
 		<script src="/static/bootstrap.js"></script>
@@ -63,14 +85,11 @@
 		}
 		</script>
 	</body>
-	<footer class="footer">
-		<div class="container" style="position:absolute; bottom:10px;">
-			<div class="span10 offset6">
+	<footer class="footer well">
+			<div>
 				<a href="https://github.com/ofermoshsaioff/food-share">FoodShare</a> by Ofer Moshaioff & Michael Derazon is powered by 
 				<a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>, Server built using 
 				<a href="http://nodejs.org/">node.js</a> and <a href="http://expressjs.com/">express </a>
-				
-			<div>
-		</div>
+			</div>
 	</footer>
 </html>
