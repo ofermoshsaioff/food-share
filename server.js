@@ -47,7 +47,7 @@ app.get('/', function(req, res){
   res.render('index.html');
 });
 
-app.post('/', function(req, res){
+app.post('/picks', function(req, res){
   var today = new Date();
   db.save(req.body.name,{'name':req.body.name,'rest':req.body.rest, 'date':today.toDateString()}, function(db_err, db_res) {
 	if (db_err) {
