@@ -29,3 +29,5 @@ To Do List
 2. Filter results for the specific date.
 3. Add links to user's E-mail and restuarant pages.
 4. Fix MapReduce function bug with rereduce.
+5. Move to mongoDB and mongoJS + cloud hosting solution (mongoHQ)
+6. Implement sticky footer
