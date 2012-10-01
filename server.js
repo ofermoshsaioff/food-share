@@ -4,7 +4,7 @@ var app = express()
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server);
   
-server.listen(8888);
+server.listen(process.env.PORT);
 
 // create socket with socket.io 
 io.sockets.on('connection', function (socket) {
