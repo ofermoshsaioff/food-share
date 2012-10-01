@@ -16,13 +16,12 @@ io.set('log level', 1)
 // Creating a db connection to irisCouch. 
 //if db exists notify, else, create the db and create a view for querying all results.
 
-var db = new(cradle.Connection)('https://ofermoshaioff.cloudant.com', 443, {auth: { username: 'ofermoshaioff', password: 'Iwannabead0red'}}).database('foodsharedb');
+var db = new(cradle.Connection)('https://ofermoshaioff.cloudant.com', 443, {auth: { username: 'ofermoshaioff', password: 'F00dshare'}}).database('foodsharedb');
 db.exists(function (err, exists) {
     if (err) {
       console.log('error', JSON.stringify(err));
     } else if (exists) {
       console.log('the force is with you.');
-	  createViews();
     } else {
       console.log('database does not exist, creating it.');
       db.create();
