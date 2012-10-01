@@ -1,13 +1,7 @@
 {
   "name": "food-share",
   "version": "1.0.0",
-  "dependencies": {
-    "express": "3.0.0",
-	"socket.oi": "0.9.10",
-	"couchdb": "0.3.8",
-	"cradle": "0.6.4",
-	"ejs": "0.8.3", 
-	"formidable":"1.0.11",
+  "dependencies": {    
   },
   "engines": {
     "node": "0.8.11",
