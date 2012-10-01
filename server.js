@@ -13,6 +13,12 @@ io.sockets.on('connection', function (socket) {
 // lower log level so taht debug messages wont flood log
 io.set('log level', 1)
 
+// Heroku doesn't use websockets, need to configure long polling
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
+
 // Creating a db connection to irisCouch. 
 //if db exists notify, else, create the db and create a view for querying all results.
 
