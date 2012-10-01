@@ -83,6 +83,7 @@ function getAllPicks(res) {
 		res.render('picks.html', {picks: []});
 		} else {
 		console.log('picks='+fetch_res);
+		if (fetch_res.length == 0) fetch_res = [{key: 'No Picks Today', value: 'Be the first one to pick a spot!'}];
 		res.render('picks.html', {picks: fetch_res});
 		}
 	});
