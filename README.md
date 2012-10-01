@@ -10,10 +10,11 @@ Development
 - FoodShare is still in Beta, but is fairly stable.
 - The backend is written in javascript using node.js with several node modules:
 	1. express - framework for node.js
-	2. cradle - couchdb client for node.js
+	2. cradle - couchdb client for node.js (cloudant for hosting db)
 	3. socket.io - websockets implementation for node.js 
 	4. ejs - for template rendering
 	5. formidable - for form handling
+	
 - The frontend is written in HTML+CSS3+javascript using Twitter Bootsrap.
 - ToDo list specified below.
 
