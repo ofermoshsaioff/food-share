@@ -22,6 +22,7 @@ db.exists(function (err, exists) {
       console.log('error', JSON.stringify(err));
     } else if (exists) {
       console.log('the force is with you.');
+	  //createViews();
     } else {
       console.log('database does not exist, creating it.');
       db.create();
@@ -91,7 +92,8 @@ function createViews() {
 	db.save('_design/rests', {
 	 group: {
 		map: function (doc) {
-			if (doc.name && doc.rest) emit(doc.rest, doc.name);
+			var today = new Date().toDateString();
+			if (doc.name && doc.rest && (doc.date == today)) emit(doc.rest, doc.name);
 			},
 		reduce: function(key, values, rereduce) {
 				var result = [];
