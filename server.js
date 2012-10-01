@@ -91,12 +91,12 @@ function createViews() {
 	db.save('_design/rests', {
 	 group: {
 		map: function (doc) {
-			if (doc.name && doc.rest) emit(doc.rest, doc);
+			if (doc.name && doc.rest) emit(doc.rest, doc.name);
 			},
 		reduce: function(key, values, rereduce) {
 				var result = [];
 				for (var i=0;i<values.length;i++) {
-					result.push(values[i].name);
+					result.push(values[i]);
 				}
 				return result.join(', ');
 			}
