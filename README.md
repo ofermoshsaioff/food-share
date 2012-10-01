@@ -27,8 +27,8 @@ To Do List
 ==========
 
 1. Add user authentication mechanism and login page.
-2. Filter results for the specific date.
+2. Filter results for the specific date. ---FIXED
 3. Add links to user's E-mail and restuarant pages.
-4. Fix MapReduce function bug with rereduce.
-5. Move to mongoDB and mongoJS + cloud hosting solution (mongoHQ)
+4. Fix MapReduce function bug with rereduce. ---FIXED
+5. Move to mongoDB and mongoJS + cloud hosting solution (mongoHQ) ---WON'T FIX
 6. Implement sticky footer
