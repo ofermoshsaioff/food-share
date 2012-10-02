@@ -3,8 +3,11 @@ var cradle = require('cradle'),
 var app = express()
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server);
-  
-server.listen(process.env.PORT);
+
+var port = process.env.PORT || 8888;
+server.listen(port);
+
+console.log('Starting Server at port: ' + port);
 
 // lower log level so taht debug messages wont flood log
 io.set('log level', 1)
