@@ -55,7 +55,7 @@ app.get('/', function(req, res){
 
 app.post('/picks', function(req, res){
   var today = new Date();
-  db.save(req.body.name,{'name':req.body.name,'rest':req.body.rest, 'date':today.toDateString()}, function(db_err, db_res) {
+  db.save(req.body.name.toLowerCase(),{'name':req.body.name,'rest':req.body.rest, 'date':today.toDateString()}, function(db_err, db_res) {
 	if (db_err) {
 		console.log('error saving pick: ' + JSON.stringify(db_err));
 		} else {
