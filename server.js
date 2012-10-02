@@ -6,17 +6,16 @@ var app = express()
   
 server.listen(process.env.PORT);
 
-// create socket with socket.io 
-io.sockets.on('connection', function (socket) {
-	console.log('socket connected to server');
-});
 // lower log level so taht debug messages wont flood log
 io.set('log level', 1)
 
 // Heroku doesn't use websockets, need to configure long polling
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
+io.set("transports", ["xhr-polling"]); 
+io.set("polling duration", 10); 
+
+// create socket with socket.io 
+io.sockets.on('connection', function (socket) {
+	console.log('socket connected to server');
 });
 
 // Creating a db connection to irisCouch. 
