@@ -30,8 +30,6 @@ db.exists(function (err, exists) {
       console.log('error', JSON.stringify(err));
     } else if (exists) {
       console.log('the force is with you.');
-	  console.log('recreating views');
-	  createViews();
     } else {
       console.log('database does not exist, creating it.');
       db.create();
