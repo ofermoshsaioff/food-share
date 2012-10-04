@@ -3,8 +3,11 @@ var cradle = require('cradle'),
 var app = express()
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server);
-  
-server.listen(8888);
+
+var port = process.env.PORT || 8888;
+server.listen(port);
+
+console.log('Starting Server at port: ' + port);
 
 // lower log level so taht debug messages wont flood log
 io.set('log level', 1)
@@ -55,8 +58,9 @@ app.get('/', function(req, res){
 });
 
 app.post('/picks', function(req, res){
-  var today = new Date();  
-  db.save(req.body.name.toLowerCase(),{'name':req.body.name,'rest':req.body.rest, 'date':today.toDateString()}, function(db_err, db_res) {
+  var today = new Date().toDateString();
+
+  db.save(req.body.name.toLowerCase(),{'name':req.body.name,'rest':req.body.rest, 'date':today}, function(db_err, db_res) {
 	if (db_err) {
 		console.log('error saving pick: ' + JSON.stringify(db_err));
 		} else {
@@ -64,7 +68,7 @@ app.post('/picks', function(req, res){
 		getAllPicks(res)
 		// pushing new pick to other clients
 		console.log('pushing new pick to client');
-		io.sockets.emit('push',{'name':req.body.name,'rest':req.body.rest, 'date':today.toDateString()});
+		io.sockets.emit('push',{'name':req.body.name,'rest':req.body.rest, 'date':today});
 			}
 		});
 	});
