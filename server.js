@@ -4,7 +4,7 @@ var app = express()
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server);
   
-server.listen(process.env.PORT);
+server.listen(8888);
 
 // lower log level so taht debug messages wont flood log
 io.set('log level', 1)
@@ -27,7 +27,8 @@ db.exists(function (err, exists) {
       console.log('error', JSON.stringify(err));
     } else if (exists) {
       console.log('the force is with you.');
-	  //createViews();
+	  console.log('recreating views');
+	  createViews();
     } else {
       console.log('database does not exist, creating it.');
       db.create();
@@ -54,8 +55,8 @@ app.get('/', function(req, res){
 });
 
 app.post('/picks', function(req, res){
-  var today = new Date();
-  db.save(req.body.name,{'name':req.body.name,'rest':req.body.rest, 'date':today.toDateString()}, function(db_err, db_res) {
+  var today = new Date();  
+  db.save(req.body.name.toLowerCase(),{'name':req.body.name,'rest':req.body.rest, 'date':today.toDateString()}, function(db_err, db_res) {
 	if (db_err) {
 		console.log('error saving pick: ' + JSON.stringify(db_err));
 		} else {
@@ -81,14 +82,15 @@ app.get('/picks', function(req, res){
 });
 
 function getAllPicks(res) {
-	var today = new Date();
-	db.view('rests/group', {group: true}, function(fetch_err, fetch_res) {
+	var today = new Date().toDateString();
+	console.log('querying results for ' + today);
+	db.view('rests/group', {group: true, startkey: [today], endkey: [today, {}]}, function(fetch_err, fetch_res) {
 	if (fetch_err) {
 		console.log(JSON.stringify(fetch_err));
 		res.render('picks.html', {picks: []});
 		} else {
 		console.log('picks='+fetch_res);
-		if (fetch_res.length == 0) fetch_res = [{key: 'No Picks Today', value: 'Be the first one to pick a spot!'}];
+		if (fetch_res.length == 0) fetch_res = [{key: [today, 'No Picks Today'], value: 'Be the first one to pick a spot!'}];
 		res.render('picks.html', {picks: fetch_res});
 		}
 	});
@@ -98,8 +100,7 @@ function createViews() {
 	db.save('_design/rests', {
 	 group: {
 		map: function (doc) {
-			var today = new Date().toDateString();
-			if (doc.name && doc.rest && (doc.date == today)) emit(doc.rest, doc.name);
+			if (doc.name && doc.rest && doc.date) emit([doc.date, doc.rest], doc.name);
 			},
 		reduce: function(key, values, rereduce) {
 				var result = [];
@@ -110,13 +111,4 @@ function createViews() {
 			}
 		}
 	});
-	
-	db.save('_design/users', {
-      all: {
-          map: function (doc) {
-              if (doc.name && doc.rest) emit(doc.name, doc);
-				}
-			}
-	});
-
 }
