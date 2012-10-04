@@ -9,6 +9,7 @@ server.listen(port);
 
 console.log('Starting Server at port: ' + port);
 
+var users = 0;
 // lower log level so taht debug messages wont flood log
 io.set('log level', 1)
 
@@ -18,7 +19,12 @@ io.set("polling duration", 10);
 
 // create socket with socket.io 
 io.sockets.on('connection', function (socket) {
-	console.log('socket connected to server');
+	users++;
+	socket.on('disconnect', function() {
+		users--;
+		console.log('current connected users: ' + users);
+	});
+	console.log('current connected users: ' + users);
 });
 
 // Creating a db connection to irisCouch. 
@@ -30,6 +36,8 @@ db.exists(function (err, exists) {
       console.log('error', JSON.stringify(err));
     } else if (exists) {
       console.log('the force is with you.');
+	  console.log('recreating views');
+	  createViews();
     } else {
       console.log('database does not exist, creating it.');
       db.create();
@@ -58,7 +66,7 @@ app.get('/', function(req, res){
 app.post('/picks', function(req, res){
   var today = new Date().toDateString();
 
-  db.save(req.body.name.toLowerCase(),{'name':req.body.name,'rest':req.body.rest, 'date':today}, function(db_err, db_res) {
+  db.save(req.body.name.toLowerCase(), {'name':req.body.name,'rest':req.body.rest, 'date':today}, function(db_err, db_res) {
 	if (db_err) {
 		console.log('error saving pick: ' + JSON.stringify(db_err));
 		} else {

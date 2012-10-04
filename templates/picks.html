@@ -46,7 +46,7 @@
 		</div>
 		<div class="container">
 			<div>
-				<h1>Showing data for <%= picks[0].key[0] %>:</h1>
+				<h1>Showing data for <%= picks[0].key[0] %></h1>
 				<br>
 			</div>
 			<div class="row-fluid">
@@ -71,7 +71,7 @@
 		<script src="/static/bootstrap.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
-		   var socket = io.connect('http://localhost:8888');
+		   var socket = io.connect(window.location.hostname, {'sync disconnect on unload':true});
 		   socket.on('connect', function() {
 			 console.log('client connected');
 			});
