@@ -10,7 +10,7 @@ Development
 - FoodShare is still in Beta, but is fairly stable.
 - The backend is written in javascript using node.js with several node modules:
 	1. express - framework for node.js
-	2. cradle - couchdb client for node.js (cloudant for hosting db)
+	2. mongodb - mongodb client for node.js (mongoHQ for hosting db)
 	3. socket.io - websockets implementation for node.js 
 	4. ejs - for template rendering
 	5. formidable - for form handling
@@ -18,17 +18,18 @@ Development
 - The frontend is written in HTML+CSS3+javascript using Twitter Bootsrap.
 - ToDo list specified below.
 
-License
+Dependencies
 =======
-
-TBA
+FoodShare uses serveral node_modules that are listed below, to install each module type: npm install <module_name>
+	1. express 
+	2. mongodb  
+	3. socket.io
+	4.ejs
+	5.formidable
 
 To Do List
 ==========
 
 1. Add user authentication mechanism and login page.
-2. Filter results for the specific date. ---FIXED
-3. Add links to user's E-mail and restuarant pages.
-4. Fix MapReduce function bug with rereduce. ---FIXED
-5. Move to mongoDB and mongoJS + cloud hosting solution (mongoHQ) ---WON'T FIX
-6. Implement sticky footer
+2. Add links to user's E-mail and restaurant pages.
+3. Implement sticky footer
