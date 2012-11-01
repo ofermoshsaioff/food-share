@@ -1,7 +1,12 @@
 {
   "name": "food-share",
   "version": "1.0.0",
-  "dependencies": {    
+  "dependencies": {
+	"express": "3.x.x",
+	"mongodb": "1.1.11",
+	"socket.io": "0.9.x",
+	"ejs": "0.8.3",
+	"formidable": "1.0.x"
   },
   "engines": {
     "node": "0.8.11",

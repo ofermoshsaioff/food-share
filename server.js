@@ -1,5 +1,6 @@
-var cradle = require('cradle'), 
-	express = require('express')
+var	express = require('express'),
+	mongo = require('mongodb');
+	
 var app = express()
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server);
@@ -9,15 +10,26 @@ server.listen(port);
 
 console.log('Starting Server at port: ' + port);
 
+app.configure(function() {
+	app.set('views', __dirname + '/templates');
+	app.engine('html', require('ejs').renderFile);
+	app.use(express.bodyParser());
+	app.use('/static', express.static(__dirname + '/static'));
+});
+
+// Count current users
 var users = 0;
-// lower log level so taht debug messages wont flood log
-io.set('log level', 1)
+// Hold pointer to collection
+var picks_collection = null;
 
-// Heroku doesn't use websockets, need to configure long polling
-io.set("transports", ["xhr-polling"]); 
-io.set("polling duration", 10); 
+io.configure(function() {
+	io.set('log level', 1)
+	io.set("transports", ["xhr-polling"]); 
+	io.set("polling duration", 10); 
+});
 
-// create socket with socket.io 
+// Create socket with socket.io 
+
 io.sockets.on('connection', function (socket) {
 	users++;
 	socket.on('disconnect', function() {
@@ -27,46 +39,27 @@ io.sockets.on('connection', function (socket) {
 	console.log('current connected users: ' + users);
 });
 
-// Creating a db connection to irisCouch. 
-//if db exists notify, else, create the db and create a view for querying all results.
+// DB setup
 
-var db = new(cradle.Connection)('https://ofermoshaioff.cloudant.com', 443, {auth: { username: 'ofermoshaioff', password: 'F00dshare'}}).database('foodsharedb');
-db.exists(function (err, exists) {
-    if (err) {
-      console.log('error', JSON.stringify(err));
-    } else if (exists) {
-      console.log('the force is with you.');
-	  console.log('recreating views');
-	  createViews();
-    } else {
-      console.log('database does not exist, creating it.');
-      db.create();
-	  console.log('creating views');
-	  createViews();
-    }
-  });
-  
- 
-// specify where the static html pages are found
-app.set('views', __dirname + '/templates');
+mongo.Db.connect("mongodb://ofer.moshaioff:F00dShare@alex.mongohq.com:10018/FoodShareDB", function(error, db) {
+	if (error) throw error;
+	console.log("Connected to DB");
+	db.createCollection('picks', function(err, collection) {
+		if (err) console.log(err)
+		picks_collection = collection;
+	});
+});
 
-// work with ejs to render html 
-app.engine('html', require('ejs').renderFile);
+// Page Handling ///////////////////////////////////////////////////
 
-app.use(express.bodyParser());
-
-// serve static content: css, js, ico files
-app.use('/static', express.static(__dirname + '/static'));
-
-// page handling
 app.get('/', function(req, res){
   res.render('index.html');
 });
 
 app.post('/picks', function(req, res){
   var today = new Date().toDateString();
-
-  db.save(req.body.name.toLowerCase(), {'name':req.body.name,'rest':req.body.rest, 'date':today}, function(db_err, db_res) {
+  var pick = {'name':req.body.name,'rest':req.body.rest, 'date':today, '_id': req.body.name.toLowerCase()};
+  picks_collection.save(pick, {safe:true}, function(db_err, db_res) {
 	if (db_err) {
 		console.log('error saving pick: ' + JSON.stringify(db_err));
 		} else {
@@ -74,7 +67,7 @@ app.post('/picks', function(req, res){
 		getAllPicks(res)
 		// pushing new pick to other clients
 		console.log('pushing new pick to client');
-		io.sockets.emit('push',{'name':req.body.name,'rest':req.body.rest, 'date':today});
+		io.sockets.emit('push',pick);
 			}
 		});
 	});
@@ -91,34 +84,19 @@ app.get('/picks', function(req, res){
   getAllPicks(res);
 });
 
+// End Page Handling ////////////////////////////////////////////////////////////
+
 function getAllPicks(res) {
 	var today = new Date().toDateString();
 	console.log('querying results for ' + today);
-	db.view('rests/group', {group: true, startkey: [today], endkey: [today, {}]}, function(fetch_err, fetch_res) {
+	picks_collection.group(['rest'], {date:today}, {'names':[]}, "function(doc, prev) {prev.names.push(doc.name);}", function(fetch_err, fetch_res) {
 	if (fetch_err) {
 		console.log(JSON.stringify(fetch_err));
-		res.render('picks.html', {picks: []});
+		res.render('picks.html', {picks: [], date:today});
 		} else {
 		console.log('picks='+fetch_res);
-		if (fetch_res.length == 0) fetch_res = [{key: [today, 'No Picks Today'], value: 'Be the first one to pick a spot!'}];
-		res.render('picks.html', {picks: fetch_res});
-		}
-	});
-}
-
-function createViews() {
-	db.save('_design/rests', {
-	 group: {
-		map: function (doc) {
-			if (doc.name && doc.rest && doc.date) emit([doc.date, doc.rest], doc.name);
-			},
-		reduce: function(key, values, rereduce) {
-				var result = [];
-				for (var i=0;i<values.length;i++) {
-					result.push(values[i]);
-				}
-				return result.join(', ');
-			}
+		if (fetch_res.length == 0) fetch_res = [{rest: 'No Picks Today', names: 'Be the first one to pick a spot!'}];
+		res.render('picks.html', {picks: fetch_res, date:today});
 		}
 	});
 }
