@@ -20,7 +20,7 @@ Development
 
 Dependencies
 =======
-- FoodShare uses serveral node_modules that are listed below, to install each module type: npm install <module_name>, 
+- FoodShare uses serveral node_modules that are listed below, to install each module type: npm install 'module_name', 
 - Or you can just install all the modules together by typing: npm install when in the app folder.
 - List of dependencies:
 	1. express 
