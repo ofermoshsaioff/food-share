@@ -26,8 +26,8 @@ Dependencies
 	1. express 
 	2. mongodb  
 	3. socket.io
-	4.ejs
-	5.formidable
+	4. ejs
+	5. formidable
 
 To Do List
 ==========
