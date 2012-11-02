@@ -110,18 +110,23 @@ app.get('/', function(req, res){
 app.post('/picks', function(req, res){
   var today = new Date().toDateString();
   var pick = {'name':req.body.name,'rest':req.body.rest, 'date':today, '_id': req.body.name.toLowerCase()};
-  picks_collection.save(pick, {safe:true}, function(db_err, db_res) {
-	if (db_err) {
-		console.log('error saving pick: ' + JSON.stringify(db_err));
-		} else {
-		// returning all picks to client;
-		getAllPicks(res)
-		// pushing new pick to other clients
-		console.log('pushing new pick to client');
-		io.sockets.emit('push',pick);
-			}
-		});
-	});
+  if (pick.name && pick.rest) {
+	  picks_collection.save(pick, {safe:true}, function(db_err, db_res) {
+		if (db_err) {
+			console.log('error saving pick: ' + JSON.stringify(db_err));
+			} else {
+			// returning all picks to client;
+			getAllPicks(res)
+			// pushing new pick to other clients
+			console.log('pushing new pick to client');
+			io.sockets.emit('push',pick);
+				}
+			});
+	} else {
+		res.render('index.html', { user: req.user });
+		//TODO - push message to client that not all fields were filled
+	}
+});
 
 app.get('/home', function(req, res){
     res.render('index.html', { user: req.user });
