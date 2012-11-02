@@ -14,6 +14,7 @@ Development
 	3. socket.io - websockets implementation for node.js 
 	4. ejs - for template rendering
 	5. formidable - for form handling
+	6. passport - for user authentication
 	
 - The frontend is written in HTML+CSS3+javascript using Twitter Bootsrap.
 - ToDo list specified below.
@@ -28,6 +29,8 @@ Dependencies
 	3. socket.io
 	4. ejs
 	5. formidable
+	6. passport
+	7. passport-facebook
 
 To Do List
 ==========
