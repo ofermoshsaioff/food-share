@@ -114,6 +114,7 @@ app.post('/picks', function(req, res){
 	  picks_collection.save(pick, {safe:true}, function(db_err, db_res) {
 		if (db_err) {
 			console.log('error saving pick: ' + JSON.stringify(db_err));
+			getAllPicks(res)
 			} else {
 			// returning all picks to client;
 			getAllPicks(res)
@@ -122,9 +123,8 @@ app.post('/picks', function(req, res){
 			io.sockets.emit('push',pick);
 				}
 			});
-	} else {
-		res.render('index.html', { user: req.user });
-		//TODO - push message to client that not all fields were filled
+	} else {				
+		getAllPicks(res);
 	}
 });
 
