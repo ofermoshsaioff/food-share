@@ -28,6 +28,8 @@
 				  <li class="active"><a href="picks">Who's Eating What</a></li>
 				  <li><a href="about">About</a></li>
 				</ul>
+				<p class="navbar-text pull-right" style="padding-right:30px;"><%if (user==null) {%><a href="login"><img src="static/facebook-login.png"/></a><%}else {%>
+				Logged in as <%=user.displayName%> | <a href="/logout">Logout</a><%}%></p>
 			  </div><!--/.nav-collapse -->
 			</div>
 		  </div>

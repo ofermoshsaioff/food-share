@@ -114,17 +114,17 @@ app.post('/picks', function(req, res){
 	  picks_collection.save(pick, {safe:true}, function(db_err, db_res) {
 		if (db_err) {
 			console.log('error saving pick: ' + JSON.stringify(db_err));
-			getAllPicks(res)
+			getAllPicks(req, res)
 			} else {
 			// returning all picks to client;
-			getAllPicks(res)
+			getAllPicks(req, res)
 			// pushing new pick to other clients
 			console.log('pushing new pick to client');
 			io.sockets.emit('push',pick);
 				}
 			});
 	} else {				
-		getAllPicks(res);
+		getAllPicks(req, res);
 	}
 });
 
@@ -133,11 +133,11 @@ app.get('/home', function(req, res){
 });
 
 app.get('/about', function(req, res){
-	res.render('about.html');  
+	res.render('about.html', { user: req.user });  
 });
 
 app.get('/picks', function(req, res){
-	getAllPicks(res);
+	getAllPicks(req, res);
 });
 
 app.get('/login', function(req, res){
@@ -177,17 +177,17 @@ app.get('/auth/facebook/callback',
 
 // End Page Handling ////////////////////////////////////////////////////////////
 
-function getAllPicks(res) {
+function getAllPicks(req, res) {
 	var today = new Date().toDateString();
 	console.log('querying results for ' + today);
 	picks_collection.group(['rest'], {date:today}, {'names':[]}, "function(doc, prev) {prev.names.push(doc.name);}", function(fetch_err, fetch_res) {
 	if (fetch_err) {
 		console.log(JSON.stringify(fetch_err));
-		res.render('picks.html', {picks: [], date:today});
+		res.render('picks.html', {picks: [], date:today, user: req.user});
 		} else {
 		console.log('picks='+fetch_res);
 		if (fetch_res.length == 0) fetch_res = [{rest: 'No Picks Today', names: 'Be the first one to pick a spot!'}];
-		res.render('picks.html', {picks: fetch_res, date:today});
+		res.render('picks.html', {picks: fetch_res, date:today, user: req.user});
 		}
 	});
 }
