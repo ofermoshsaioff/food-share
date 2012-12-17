@@ -36,7 +36,7 @@ passport.use(new FacebookStrategy({
     clientSecret: FACEBOOK_APP_SECRET,
     callbackURL: ip + "/auth/facebook/callback"
   },
-  function(accessToken, refreshToken, profile, done) {
+  function(accessToken, refreshToken, profile, done) {  
     // asynchronous verification, for effect...
     process.nextTick(function () {
       
