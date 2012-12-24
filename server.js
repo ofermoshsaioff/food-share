@@ -1,5 +1,4 @@
-var express = require('express'),
-    app = require('./app').init_app(),
+var app = require('./app').init_app(),
     mongo = require('mongodb'),
     io = require('socket.io').listen(app);
 
